@@ -42,22 +42,35 @@ module CircuitLogic
       end
     end
   end
-
-  def do_it(circuit)
-    gates = []
-    circuit.each_line do |line|
-      line.strip!
-      @gate = Gate.new if @gate.nil? || @gate.complete
-      gates << @gate
-
-      @gate.inputs << 'false' if (line.index('0') == 0)
-      @gate.inputs << 'true' if (line.index('1') == 0)
-
-      @gate.type = '||' if (line.index('O') == 0)
-      @gate.type = '&&' if (line.index('A') == 0)
-      @gate.type = '!'  if (line.index('N') == 0)
-      @gate.type = '^' if (line.index('X') == 0)
+  class Circuit
+    def initialize(circuit)
+      @lines = parse_lines(circuit)
+      @special = %w[O A X N 0 1]
     end
-    gates.first.value
+    def parse_lines(circuit)
+      lines = []
+      circuit.each_line do |line|
+        lines << line.strip
+      end
+      lines
+    end
+    def bulb_line 
+      @lines.index{|l| l[-1] == '@'}
+    end
+    def find_next_node(line)
+
+    end
+
+    def solve
+      bulb_index = bulb_line
+      ch = ''
+      elem = @lines[bulb_index].reverse.each_char do |c|
+       ch = c if @special.include?(c)
+       break if ch
+      end
+    end
+  end
+  def do_it(circuit)
+    Circuit.new(circuit).solve
   end
 end
