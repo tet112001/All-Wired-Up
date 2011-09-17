@@ -5,11 +5,7 @@ include CircuitLogic
 
 class TestCircuitLogic < Test::Unit::TestCase
 
-  def test_O
-    s = 'O-----------@'
-    assert_equal 'O', do_it(s)
-  end
-  def test_or
+    def test_or
     circuit = <<CIRCUIT
 0-------------|
               |
